@@ -1,22 +1,23 @@
 /*global require module */
 var fs = require('fs')
-var should = require('should')
+var path    = require('path')
+var rootdir = path.normalize(__dirname)
+var default_config_file = rootdir+'/config.json'
+
+
 var config_okay = function(f,cb){
     if(!cb && typeof f === 'function'){
         cb = f
-        f='config.json'
+        f=default_config_file
     }
     if(!f){
-        f='config.json'
+        f=default_config_file
     }
     fs.stat(f,function(err,stats){
-        //should.not.exist(err)
-        //
-        //should.exist(stats)
         if(err) return cb(err)
         if(!stats) return cb('no stats')
         if(stats.mode.toString(8) != '100600'){
-            throw new Error('mode of '+f+' must be 0600')
+            return cb('mode of '+f+' must be 0600')
         }
         var config = require(f)
         return cb(null,config)
