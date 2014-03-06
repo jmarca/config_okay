@@ -1,0 +1,25 @@
+{
+  "name": "config_okay",
+  "version": "0.0.1",
+  "description": "Make sure config files are mode 0600 before you use it",
+  "main": "config_okay.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmarca/config_okay"
+  },
+  "keywords": [
+    "config"
+  ],
+  "author": "James E. Marca",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jmarca/config_okay/issues"
+  },
+  "homepage": "https://github.com/jmarca/config_okay"
+}
