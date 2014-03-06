@@ -13,6 +13,9 @@ var config_okay = function(f,cb){
     if(!f){
         f=default_config_file
     }
+    if(! /\.js(on)?$/.test(f)){
+        return cb('config_okay requires file to end in .json or .js')
+    }
     fs.stat(f,function(err,stats){
         if(err) return cb(err)
         if(!stats) return cb('no stats')

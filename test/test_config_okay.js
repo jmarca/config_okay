@@ -62,6 +62,15 @@ describe('config_okay',function(){
                return done()
            })
        })
+    it('should error out on a file ending in .txt'
+      ,function(done){
+           config_okay('file.txt',function(e,c){
+               should.exist(e)
+               should.not.exist(c)
+               e.should.match(/^config_okay requires file to end in/)
+               return done()
+           })
+       })
     it('should parse okay a file in with mode 0600'
       ,function(done){
            config_okay(good_file,function(err,c){
