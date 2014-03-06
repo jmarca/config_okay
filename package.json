@@ -1,6 +1,6 @@
 {
   "name": "config_okay",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Make sure config files are mode 0600 before you use it",
   "main": "config_okay.js",
   "directories": {
