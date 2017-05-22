@@ -5,7 +5,7 @@ node_js:
   - "node"
   - "7"
   - "6"
-  - "4"
+
 
 env:
   - global:
