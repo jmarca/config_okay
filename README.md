@@ -1,5 +1,7 @@
 # config okay
 
+[![Build Status](https://travis-ci.org/jmarca/config_okay.svg?branch=master)](https://travis-ci.org/jmarca/config_okay)
+
 [![Greenkeeper badge](https://badges.greenkeeper.io/jmarca/config_okay.svg)](https://greenkeeper.io/)
 
 This became a module because I used it more than once.
