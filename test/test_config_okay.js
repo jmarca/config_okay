@@ -1,87 +1,104 @@
 /* global require console process it describe after before __dirname */
 
-var config_okay = require('../.')
+const config_okay = require('../.')
 
-var should = require('should')
-var fs     = require('fs')
+const fs     = require('fs')
+const denodeify = require('denodeify')
+const readFile = denodeify(fs.readFile);
+const writeFile = denodeify(fs.writeFile);
+const statFile = denodeify(fs.stat);
 
-var path    = require('path')
-var rootdir = path.normalize(__dirname)
+const tap = require('tap')
 
-var good_file = rootdir+'/test.good.config.json'
-var bad_file  = rootdir+'/test.bad.config.json'
+const path    = require('path')
+const rootdir = path.normalize(__dirname)
 
-before(function(done){
+const good_file = rootdir+'/test.good.config.json'
+const bad_file  = rootdir+'/test.bad.config.json'
+
+const good_config = {'foo':'bar'
+                     ,'baz':'bat'
+                     ,'another':2
+                    };
+
+const bad_config = {'foo':'barf'
+                    ,'baz':'batch'
+                    ,'another':false
+                   };
+
+function before(){
     // create a config file
-    var good_config = {'foo':'bar'
-                      ,'baz':'bat'
-                      ,'another':2
-                      }
 
-    var bad_config = {'foo':'barf'
-                     ,'baz':'batch'
-                     ,'another':false
-                     }
 
-    fs.writeFile(good_file
-                ,JSON.stringify(good_config)
-                ,{'encoding':'utf8'
-                 ,'mode':'0600'
-                 }
-                ,function(err){
-                     if(err) throw err
+}
 
-                     fs.writeFile(bad_file
-                                 ,JSON.stringify(bad_config)
-                                 ,{'encoding':'utf8'
-                                  ,'mode':'0700'
-                                  }
-                                 ,function(err){
-                                      if(err) throw err
-                                      return done()
-                                  })
-                     return null
-                 })
-    return null
+
+
+tap.plan(3)
+
+tap.test('bad file settings',function (t) {
+
+    return writeFile(bad_file,JSON.stringify(bad_config)
+                     , {'enconding':'utf8'
+                        ,'mode':'0700'})
+        .then( () => {
+            return  config_okay(bad_file)
+                .then ( result => {
+                    t.fail( 'did not reject bad file')
+                    t.end()
+                })
+                .catch ( err => {
+                    t.match(err,/^mode of.*must be 0600$/,'complaint looks good')
+                    t.pass('did not process file with wrong chmod')
+                    t.end()
+                })
+        })
+        .then( () => {
+            return fs.unlinkSync(bad_file)
+        })
+        .catch(console.log.bind(console))
 })
 
-after(function(done){
-    if( !fs.unlinkSync(good_file) && !fs.unlinkSync(bad_file) )
-        return done()
-    console.log('error unlinking?')
-    return null
+tap.test('skip .txt files', function (t) {
+
+    return config_okay('file.txt')
+        .then ( result => {
+            t.fail( 'did not reject .txt file')
+            return null
+        })
+        .catch( err => {
+            t.match(err,/^config_okay requires file to end in/,'complaint looks good')
+            t.pass('did not process .txt file')
+            t.end()
+            return null
+        })
+
 })
 
-describe('config_okay',function(){
-    it('should error out on a file in without mode 0600'
-      ,function(done){
-           config_okay(bad_file,function(e,c){
-               should.exist(e)
-               should.not.exist(c)
-               e.should.match(/^mode of.*must be 0600$/)
-               return done()
-           })
-       })
-    it('should error out on a file ending in .txt'
-      ,function(done){
-           config_okay('file.txt',function(e,c){
-               should.exist(e)
-               should.not.exist(c)
-               e.should.match(/^config_okay requires file to end in/)
-               return done()
-           })
-       })
-    it('should parse okay a file in with mode 0600'
-      ,function(done){
-           config_okay(good_file,function(err,c){
-               should.not.exist(err)
-               should.exist(c)
-               c.should.have.keys('foo','baz','another')
-               c.foo.should.eql('bar')
-               c.baz.should.eql('bat')
-               c.another.should.eql(2)
-               return done()
-           })
 
-       })
+tap.test('read valid json file', function (t) {
+    return writeFile(good_file,JSON.stringify(good_config)
+                     , {'enconding':'utf8'
+                        ,'mode':'0600'})
+        .then( () => {
+            return config_okay(good_file)
+                .then( result => {
+                    t.ok(result)
+                    t.same(result, good_config, 'read back what was put in to config file')
+                    t.end()
+                    return null
+                })
+                .catch( e =>{
+                    t.fail('did not process valid json file')
+                    t.end()
+                    return null
+                })
+        })
+        .then( () => {
+            return fs.unlinkSync(good_file)
+        })
+        .catch(console.log.bind(console))
+
 })
+
+tap.end()
