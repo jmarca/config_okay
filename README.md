@@ -25,6 +25,9 @@ npm install config_okay
 
 # Example
 
+
+The older version you would do this:
+
 ``` javascript
 
 var config_okay = require('config_okay')
@@ -38,6 +41,26 @@ config_okay(configfile,function(err,config){
 })
 ```
 
-Personally, I sometimes stick this in something like an
-async.waterfall as the first function in the sequence, so that if it
-fails, the whole cascade will abort.
+
+Now that isn't true anymore because as of May 2017 I've switched to
+using promises.
+
+So now the usage is
+
+
+``` javascript
+
+const config_okay = require('config_okay')
+const configfile = 'config.json' // or pull from the command line or something
+
+config_okay(configfile)
+.then(config => {
+     return do_something(config)
+})
+.catch( e => {
+     return handleError(e)
+})
+
+```
+
+Look at the test file to see what I mean.
