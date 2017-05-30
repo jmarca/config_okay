@@ -4,6 +4,8 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/jmarca/config_okay.svg)](https://greenkeeper.io/)
 
+[![Code Climate](https://codeclimate.com/github/jmarca/config_okay/badges/gpa.svg)](https://codeclimate.com/github/jmarca/config_okay)
+
 This became a module because I used it more than once.
 
 It is really simple.  All it does is parse a config file.  Borrowing
