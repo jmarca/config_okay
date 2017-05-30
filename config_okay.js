@@ -31,7 +31,7 @@ function config_okay(f) {
                 if(!stats){
                     return reject ('no stats')
                 }
-                if(stats.mode.toString(8) != '100600'){
+                if(stats.mode.toString(8) !== '100600'){
                     return reject ('mode of '+f+' must be 0600')
                 }
                 const config = require(f)
