@@ -26,15 +26,8 @@ const bad_config = {'foo':'barf'
                     ,'another':false
                    };
 
-function before(){
-    // create a config file
 
-
-}
-
-
-
-tap.plan(3)
+tap.plan(5)
 
 tap.test('bad file settings',function (t) {
 
@@ -74,6 +67,49 @@ tap.test('skip .txt files', function (t) {
         })
 
 })
+
+tap.test('croak if a file is not there', function (t) {
+
+    return config_okay('file.json')
+        .then ( result => {
+            t.fail( 'did not reject .txt file')
+            return null
+        })
+        .catch( err => {
+            // console.log('caught error in test as expected',err)
+            t.match(err,/ENOENT: no such file or directory/,'complaint looks good')
+            t.pass('did not process a file that does not exist')
+            t.end()
+            return null
+        })
+
+})
+
+tap.test('default to config.json if no file specified', function (t) {
+    return writeFile('config.json',JSON.stringify(good_config)
+                     , {'enconding':'utf8'
+                        ,'mode':'0600'})
+        .then( () => {
+            return config_okay()
+                .then( result => {
+                    t.ok(result)
+                    t.same(result, good_config, 'read back what was put in to config file')
+                    t.end()
+                    return null
+                })
+                .catch( e =>{
+                    t.fail('did not process valid json file')
+                    t.end()
+                    return null
+                })
+        })
+        .then( () => {
+            return fs.unlinkSync('config.json')
+        })
+        .catch(console.log.bind(console))
+
+})
+
 
 
 tap.test('read valid json file', function (t) {

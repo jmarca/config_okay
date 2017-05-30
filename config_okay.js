@@ -9,6 +9,7 @@ function statfile(f) {
     return new Promise( (resolve,reject) => {
         fs.stat(f,(e,s)=>{
             if(e){
+                //console.log('got an error',e)
                 reject(e)
             }
             resolve(s)
@@ -28,9 +29,12 @@ function config_okay(f) {
         }
         statfile(f)
             .then( stats => {
-                if(!stats){
-                    return reject ('no stats')
-                }
+                // if(!stats){
+                //     return reject ('no stats')
+                // }
+                // I can't see how that might happen
+                // if stat fails, it rejects.  if it succeeds, it will
+                // return a stats object
                 if(stats.mode.toString(8) !== '100600'){
                     return reject ('mode of '+f+' must be 0600')
                 }
@@ -38,7 +42,8 @@ function config_okay(f) {
                 return resolve(config)
             })
             .catch (e => {
-                throw (e)
+                //console.log('caught error',e)
+                reject (e)
             })
         return null
     })
