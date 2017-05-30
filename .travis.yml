@@ -8,8 +8,7 @@ node_js:
 
 
 env:
-  - global:
-    - WARNINGS_ARE_ERRORS=1
+  CODECLIMATE_REPO_TOKEN: 8320bf7b177ff7583cc3fcc203d8200155ffa184f7731172cd227be22d0e27ff
 
 notifications:
   email:
