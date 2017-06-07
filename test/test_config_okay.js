@@ -4,9 +4,7 @@ const config_okay = require('../.')
 
 const fs     = require('fs')
 const denodeify = require('denodeify')
-const readFile = denodeify(fs.readFile);
 const writeFile = denodeify(fs.writeFile);
-const statFile = denodeify(fs.stat);
 
 const tap = require('tap')
 
