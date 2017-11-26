@@ -24,6 +24,6 @@
   "homepage": "https://github.com/jmarca/config_okay",
   "devDependencies": {
     "denodeify": "^1.2.1",
-    "tap": "^10.3.2"
+    "tap": "^11.0.0"
   }
 }
