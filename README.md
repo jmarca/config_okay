@@ -1,7 +1,7 @@
 # config okay
 
 [![Build Status](https://travis-ci.org/jmarca/config_okay.svg?branch=master)](https://travis-ci.org/jmarca/config_okay)
-[![Greenkeeper badge](https://badges.greenkeeper.io/jmarca/config_okay.svg)](https://greenkeeper.io/)
+
 [![Code Climate](https://codeclimate.com/github/jmarca/config_okay/badges/gpa.svg)](https://codeclimate.com/github/jmarca/config_okay)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/29ae2932ebe29ecceb34/test_coverage)](https://codeclimate.com/github/jmarca/config_okay/test_coverage)
 
